@@ -63,8 +63,9 @@ public class TimelineActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.compose) {
             // Compose icon has been selected
-            Toast.makeText(this, "Compose!", Toast.LENGTH_SHORT).show();
             // Navigate to the compose activity
+            Intent intent = new Intent(this, ComposeActivity.class);
+            startActivity(intent);
             return true;
         } else if (item.getItemId() == R.id.btnLogout) {
             // forget who's logged in
@@ -101,22 +102,6 @@ public class TimelineActivity extends AppCompatActivity {
             }
         });
     }
-
-    /*
-    @Override
-    btnLogout.setOnClickListener(new View.OnClickListener() {
-    public void onLogoutButton() {
-        // forget who's logged in
-        TwitterApp.getRestClient(this).clearAccessToken();
-
-        // navigate backwards to Login screen
-        Intent i = new Intent(this, LoginActivity.class);
-        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // this makes sure the Back button won't work
-        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // same as above
-        startActivity(i);
-        finish();
-    }
-    */
 
 
 }
