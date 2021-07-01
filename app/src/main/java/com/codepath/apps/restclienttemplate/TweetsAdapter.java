@@ -100,7 +100,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
                 ivTweetPic.setVisibility(View.VISIBLE);
             } else {
                 //Glide.with(context).load(tweet.user.profileImageUrl).into(ivTweetPic);
-                ivTweetPic.setVisibility(View.INVISIBLE);
+                ivTweetPic.setVisibility(View.GONE);
             }
             Log.i("Time tweet", "time ago: "+tweet.time);
         }
