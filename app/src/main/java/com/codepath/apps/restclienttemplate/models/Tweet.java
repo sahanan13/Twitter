@@ -19,6 +19,8 @@ public class Tweet {
     public String createdAt;
     public User user;
     public String time;
+    public String tweetPic;
+    //public static boolean hasTweetPic = false;
     private static final int SECOND_MILLIS = 1000;
     private static final int MINUTE_MILLIS = 60 * SECOND_MILLIS;
     private static final int HOUR_MILLIS = 60 * MINUTE_MILLIS;
@@ -33,6 +35,16 @@ public class Tweet {
         tweet.createdAt = jsonObject.getString("created_at");
         tweet.user = User.fromJson(jsonObject.getJSONObject("user"));
         tweet.time = tweet.getRelativeTimeAgo(jsonObject.getString("created_at"));
+        JSONObject jsonObjectEntities = jsonObject.getJSONObject("entities");
+        if (jsonObjectEntities.has("media")) {
+            JSONArray jsonArrayMedia = jsonObjectEntities.getJSONArray("media");
+            tweet.tweetPic = (jsonArrayMedia.getJSONObject(0)).getString("media_url_https");
+            //hasTweetPic = true;
+            Log.i("Tweet", "Media: " + tweet.tweetPic);
+        } else {
+            //hasTweetPic = false;
+            Log.i("Tweet", "Media false: " + tweet.tweetPic);
+        }
         return tweet;
     }
 

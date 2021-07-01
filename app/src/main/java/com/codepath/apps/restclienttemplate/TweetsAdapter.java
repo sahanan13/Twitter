@@ -61,6 +61,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
         TextView tvScreenName;
         TextView tvTime;
         TextView tvName;
+        ImageView ivTweetPic;
 
         public ViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);
@@ -69,6 +70,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             tvScreenName = itemView.findViewById(R.id.tvScreenName);
             tvTime = itemView.findViewById(R.id.tvTime);
             tvName = itemView.findViewById(R.id.tvName);
+            ivTweetPic = itemView.findViewById(R.id.ivTweetPic);
         }
 
         public void bind(Tweet tweet) {
@@ -77,6 +79,16 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             tvName.setText(tweet.user.name);
             Glide.with(context).load(tweet.user.profileImageUrl).into(ivProfileImage);
             tvTime.setText(tweet.time);
+            //Log.i("TweetAdapter", "HasTweetPic: " + tweet.hasTweetPic + " " + tweet.body);
+            if (tweet.tweetPic != null) {
+                Glide.with(context).load(tweet.tweetPic).into(ivTweetPic);
+                //Glide.with(context).load("http://pbs.twimg.com/media/E5LiJp6WUAIy0dp.jpg").into(ivTweetPic);
+                Log.i("TweetAdapter", "Tweet img link: " +tweet.tweetPic);
+                ivTweetPic.setVisibility(View.VISIBLE);
+            } else {
+                //Glide.with(context).load(tweet.user.profileImageUrl).into(ivTweetPic);
+                ivTweetPic.setVisibility(View.INVISIBLE);
+            }
             Log.i("Time tweet", "time ago: "+tweet.time);
         }
     }
