@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -68,6 +69,9 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
         TextView tvTime;
         TextView tvName;
         ImageView ivTweetPic;
+        Button btnReply;
+        Button btnRetweet;
+        Button btnLike;
 
         public ViewHolder(View itemView, ItemTweetBinding binding) {
             super(itemView);
@@ -77,20 +81,21 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             tvTime = binding.tvTime;
             tvName = binding.tvName;
             ivTweetPic = binding.ivTweetPic;
-
-            /*ivProfileImage = itemView.findViewById(R.id.ivProfileImage);
-            tvBody = itemView.findViewById(R.id.tvBody);
-            tvScreenName = itemView.findViewById(R.id.tvScreenName);
-            tvTime = itemView.findViewById(R.id.tvTime);
-            tvName = itemView.findViewById(R.id.tvName);
-            ivTweetPic = itemView.findViewById(R.id.ivTweetPic);*/
+            btnReply = binding.btnReply;
+            btnRetweet = binding.btnRetweet;
+            btnLike = binding.btnLike;
         }
 
         public void bind(Tweet tweet) {
             tvBody.setText(tweet.body);
+            tvBody.setLinksClickable(true);
             tvScreenName.setText(" @" + tweet.user.screenName);
             tvName.setText(tweet.user.name);
-            Glide.with(activity).load(tweet.user.profileImageUrl).into(ivProfileImage);
+            Glide.with(activity).load(tweet.user.profileImageUrl).circleCrop().into(ivProfileImage);
+            //Glide.with(activity).load(ic_vector_reply.xml).into(ivProfileImage);
+
+           // Glide.with(activity).load(getImage("ic_vector_reply.xml")).into(btnReply);
+
             tvTime.setText(tweet.time);
             //Log.i("TweetAdapter", "HasTweetPic: " + tweet.hasTweetPic + " " + tweet.body);
             if (tweet.tweetPic != null) {
@@ -104,6 +109,11 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             }
             Log.i("Time tweet", "time ago: "+tweet.time);
         }
+    }
+
+    public int getImage(String imageName) {
+        int drawableResourceId = activity.getResources().getIdentifier(imageName, "drawable", activity.getPackageName());
+        return drawableResourceId;
     }
 
     // Clean all elements of the recycler
