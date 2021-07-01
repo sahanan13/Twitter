@@ -2,6 +2,7 @@ package com.codepath.apps.restclienttemplate;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +19,7 @@ import com.codepath.apps.restclienttemplate.databinding.ItemTweetBinding;
 import com.codepath.apps.restclienttemplate.models.Tweet;
 
 import org.jetbrains.annotations.NotNull;
+import org.parceler.Parcels;
 
 import java.util.List;
 
@@ -61,7 +63,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
 
 
     //Define a viewholder
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         ImageView ivProfileImage;
         TextView tvBody;
@@ -84,6 +86,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             btnReply = binding.btnReply;
             btnRetweet = binding.btnRetweet;
             btnLike = binding.btnLike;
+            itemView.setOnClickListener(this);
         }
 
         public void bind(Tweet tweet) {
@@ -92,29 +95,36 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             tvScreenName.setText(" @" + tweet.user.screenName);
             tvName.setText(tweet.user.name);
             Glide.with(activity).load(tweet.user.profileImageUrl).circleCrop().into(ivProfileImage);
-            //Glide.with(activity).load(ic_vector_reply.xml).into(ivProfileImage);
-
-           // Glide.with(activity).load(getImage("ic_vector_reply.xml")).into(btnReply);
 
             tvTime.setText(tweet.time);
-            //Log.i("TweetAdapter", "HasTweetPic: " + tweet.hasTweetPic + " " + tweet.body);
             if (tweet.tweetPic != null) {
                 Glide.with(activity).load(tweet.tweetPic).into(ivTweetPic);
-                //Glide.with(context).load("http://pbs.twimg.com/media/E5LiJp6WUAIy0dp.jpg").into(ivTweetPic);
                 Log.i("TweetAdapter", "Tweet img link: " +tweet.tweetPic);
                 ivTweetPic.setVisibility(View.VISIBLE);
             } else {
-                //Glide.with(context).load(tweet.user.profileImageUrl).into(ivTweetPic);
                 ivTweetPic.setVisibility(View.GONE);
             }
             Log.i("Time tweet", "time ago: "+tweet.time);
         }
+
+        @Override
+        public void onClick(View view) {
+            // gets item position
+            int position = getAdapterPosition();
+            // make sure the position is valid, i.e. actually exists in the view
+            if (position != RecyclerView.NO_POSITION) {
+                // get the movie at the position, this won't work if the class is static
+                Tweet tweet = tweets.get(position);
+                // create intent for the new activity
+                Intent intent = new Intent(activity, DetailsActivity.class);
+                // serialize the movie using parceler, use its short name as a key
+                intent.putExtra(Tweet.class.getSimpleName(), Parcels.wrap(tweet));
+                // show the activity
+                activity.startActivity(intent);
+            }
+        }
     }
 
-    public int getImage(String imageName) {
-        int drawableResourceId = activity.getResources().getIdentifier(imageName, "drawable", activity.getPackageName());
-        return drawableResourceId;
-    }
 
     // Clean all elements of the recycler
     public void clear() {
