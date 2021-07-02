@@ -74,6 +74,8 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
         Button btnReply;
         Button btnRetweet;
         Button btnLike;
+        Button btnLiked;
+        boolean isLiked = false;
 
         public ViewHolder(View itemView, ItemTweetBinding binding) {
             super(itemView);
@@ -86,7 +88,20 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             btnReply = binding.btnReply;
             btnRetweet = binding.btnRetweet;
             btnLike = binding.btnLike;
+            btnLiked = binding.btnLiked;
             itemView.setOnClickListener(this);
+            btnLike.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (isLiked) {
+                        btnLike.setBackground(activity.getResources().getDrawable(R.drawable.ic_vector_heart_stroke));
+                        isLiked = false;
+                    } else {
+                        btnLike.setBackground(activity.getResources().getDrawable(R.drawable.ic_vector_heart_1));
+                        isLiked = true;
+                    }
+                }
+            });
         }
 
         public void bind(Tweet tweet) {
